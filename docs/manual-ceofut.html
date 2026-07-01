@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Manual do Usuário - CEOFut</title>
+    <style>
+      :root {
+        --ink: #111713;
+        --muted: #6e746b;
+        --paper: #fff8e8;
+        --line: #e6d8be;
+        --grass: #0f5f39;
+        --grass-2: #22a161;
+        --gold: #e0b957;
+        --white: #ffffff;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        font-family: Inter, Arial, sans-serif;
+        background:
+          radial-gradient(circle at 20% 0%, rgba(224,185,87,0.25), transparent 28%),
+          radial-gradient(circle at 80% 0%, rgba(34,161,97,0.22), transparent 30%),
+          #08150f;
+      }
+
+      .page {
+        width: min(980px, calc(100% - 28px));
+        margin: 0 auto;
+      }
+
+      header {
+        min-height: 560px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        color: #fff;
+        padding: 48px;
+        margin: 28px 0;
+        border-radius: 12px;
+        background:
+          linear-gradient(180deg, rgba(13,79,50,0.05), rgba(3,8,5,0.94)),
+          linear-gradient(90deg, transparent 49%, rgba(255,255,255,0.28) 49.5% 50.5%, transparent 51%),
+          radial-gradient(circle at 50% 50%, transparent 0 72px, rgba(255,255,255,0.28) 73px 75px, transparent 76px),
+          repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0 2px, transparent 2px 116px),
+          linear-gradient(135deg, #167246, #07140d);
+        box-shadow: 0 28px 80px rgba(0,0,0,0.35);
+      }
+
+      .eyebrow {
+        color: var(--gold);
+        text-transform: uppercase;
+        letter-spacing: 1.8px;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      h1 {
+        font-size: clamp(54px, 11vw, 118px);
+        line-height: 0.9;
+        margin: 10px 0 18px;
+      }
+
+      header p {
+        max-width: 620px;
+        color: rgba(255,255,255,0.78);
+        font-size: 21px;
+        line-height: 1.35;
+        margin: 0;
+      }
+
+      section {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 32px;
+        margin: 18px 0;
+      }
+
+      h2 {
+        font-size: 30px;
+        margin: 0 0 18px;
+      }
+
+      h3 {
+        font-size: 18px;
+        margin: 0 0 8px;
+      }
+
+      p, li {
+        color: #3c403b;
+        line-height: 1.65;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 20px;
+      }
+
+      .step {
+        display: grid;
+        grid-template-columns: 42px 1fr;
+        gap: 14px;
+        padding: 18px 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .step:first-of-type { border-top: 0; }
+
+      .num {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        color: #fff;
+        background: var(--grass);
+        font-weight: 900;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 0 12px;
+        border-radius: 999px;
+        color: #151515;
+        background: var(--gold);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+      }
+
+      .note {
+        background: #102017;
+        color: #fff;
+        border: 0;
+      }
+
+      .note p, .note li { color: rgba(255,255,255,0.78); }
+
+      .fine {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      footer {
+        color: rgba(255,255,255,0.64);
+        padding: 32px 0 42px;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      footer strong {
+        color: var(--gold);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      @media print {
+        body { background: #fff; }
+        header, section { break-inside: avoid; box-shadow: none; }
+        .page { width: 100%; }
+      }
+
+      @media (max-width: 720px) {
+        header, section { padding: 22px; }
+        header { min-height: 460px; }
+        .grid { grid-template-columns: 1fr; }
+        footer { display: grid; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="eyebrow">Manual do usuário</div>
+        <h1>CEOFut</h1>
+        <p>Organize a pelada, confirme os atletas, controle o Pix e sorteie times equilibrados por nota e posição.</p>
+      </header>
+
+      <section>
+        <span class="tag">Visão geral</span>
+        <h2>Para que serve</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Para o CEO</h3>
+            <p>O organizador cria a pelada, informa modalidade, local, horário, valor, chave Pix e compartilha o convite no WhatsApp.</p>
+          </div>
+          <div class="card">
+            <h3>Para os jogadores</h3>
+            <p>O atleta entra pelo link, confirma se vai ou não, cadastra nota e escolhe 3 posições por preferência.</p>
+          </div>
+          <div class="card">
+            <h3>Sorteio inteligente</h3>
+            <p>O CEO sorteia os times considerando a média dos jogadores e as posições preferidas para deixar a partida mais equilibrada.</p>
+          </div>
+          <div class="card">
+            <h3>Times públicos</h3>
+            <p>Depois do sorteio, todos que têm o link podem ver os times. Somente o CEO pode sortear, mexer ou travar.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <span class="tag">Passo a passo do CEO</span>
+        <h2>Criando uma pelada</h2>
+        <div class="step">
+          <div class="num">1</div>
+          <div>
+            <h3>Entrar como CEO</h3>
+            <p>Acesse o CEOFut, informe seu nome, seu e-mail cadastrado e, se quiser, sua chave Pix padrão.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <div>
+            <h3>Criar nova pelada</h3>
+            <p>Clique em <strong>Nova pelada</strong> e preencha nome, modalidade, data, horário, local, valor e chave Pix.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <div>
+            <h3>Compartilhar no WhatsApp</h3>
+            <p>Clique em <strong>Copiar WhatsApp</strong> ou <strong>Abrir WhatsApp</strong>. A mensagem já vai com código, local, data, valor, Pix e link.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">4</div>
+          <div>
+            <h3>Acompanhar confirmações</h3>
+            <p>No painel, veja quem confirmou, quem está pendente, quem não vai e quem já pagou.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <span class="tag">Jogadores</span>
+        <h2>Como o atleta confirma</h2>
+        <div class="step">
+          <div class="num">1</div>
+          <div>
+            <h3>Abrir o link recebido</h3>
+            <p>O jogador não cria pelada. Ele apenas entra pelo convite enviado pelo CEO.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <div>
+            <h3>Informar dados do atleta</h3>
+            <p>Preenche nome, WhatsApp opcional, nota de 1 a 10 e escolhe 3 posições por preferência.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <div>
+            <h3>Confirmar presença</h3>
+            <p>O atleta toca em <strong>Confirmar presença</strong>. Se não puder jogar, toca em <strong>Não vou</strong>.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <span class="tag">Sorteio</span>
+        <h2>Como montar os times</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Sortear</h3>
+            <p>O botão <strong>Sortear times inteligentes</strong> aparece apenas para o CEO. O app cria 2 ou mais times conforme a quantidade de jogadores.</p>
+          </div>
+          <div class="card">
+            <h3>Sortear novamente</h3>
+            <p>Se o CEO quiser outra combinação, pode clicar em <strong>Sortear novamente</strong> enquanto o sorteio não estiver travado.</p>
+          </div>
+          <div class="card">
+            <h3>Alterar manualmente</h3>
+            <p>O CEO pode mover jogadores entre os times usando o seletor ao lado de cada nome.</p>
+          </div>
+          <div class="card">
+            <h3>Travar sorteio</h3>
+            <p>Quando estiver tudo certo, clique em <strong>Travar sorteio</strong>. Os jogadores continuam vendo os times, mas ninguém altera sem destravar.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="note">
+        <span class="tag">Boas práticas</span>
+        <h2>Recomendação para vender o uso</h2>
+        <ul>
+          <li>Peça para cada atleta preencher a nota com sinceridade. Isso melhora o balanceamento.</li>
+          <li>Use a chave Pix no cadastro da pelada para facilitar a cobrança.</li>
+          <li>Depois de todos confirmarem, confira as notas, marque quem pagou e só então sorteie.</li>
+          <li>Trave o sorteio quando os times estiverem definidos para evitar confusão antes do jogo.</li>
+        </ul>
+      </section>
+
+      <section>
+        <span class="tag">Suporte</span>
+        <h2>O que fazer se algo parecer errado</h2>
+        <p>Atualize a página, confira se está usando o link correto da pelada e confirme com o CEO se o sorteio já foi travado.</p>
+        <p class="fine">Este manual pode ser enviado aos compradores do CEOFut ou exportado em PDF pelo navegador.</p>
+      </section>
+
+      <footer>
+        <strong>CEO Group</strong>
+        <span>Desenvolvido pelo CEO Group.</span>
+      </footer>
+    </div>
+  </body>
+</html>

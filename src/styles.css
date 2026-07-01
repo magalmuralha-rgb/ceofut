@@ -194,6 +194,10 @@ input:focus, select:focus, textarea:focus {
   padding: 0 16px;
   font-weight: 900;
   cursor: pointer;
+  display: inline-grid;
+  place-items: center;
+  text-align: center;
+  line-height: 1.15;
 }
 
 .primary {
@@ -431,6 +435,7 @@ input:focus, select:focus, textarea:focus {
   color: #8a3a11;
   font-size: 12px;
   cursor: pointer;
+  text-align: center;
 }
 .paid-toggle input { width: auto; }
 .paid-toggle.paid { color: #0d4f32; background: #e7f8ee; border-color: #9bd9b6; }
@@ -531,10 +536,49 @@ footer strong { color: var(--gold); letter-spacing: 0.8px; text-transform: upper
   .brand small { display: none; }
   .hero-copy { min-height: 330px; padding: 28px; }
   .panel, .invite-card { padding: 16px; }
-  .match-hero { display: grid; }
-  .match-hero .primary, .whats { width: 100%; }
-  .player-row { grid-template-columns: 1fr; }
+  .price-box {
+    display: grid;
+    align-items: stretch;
+  }
+  .price-box .ghost {
+    width: 100%;
+  }
+  .match-hero {
+    display: grid;
+    padding: 20px;
+  }
+  .hero-actions {
+    min-width: 0;
+    width: 100%;
+  }
+  .match-hero .primary, .whats, .draw-actions .primary, .draw-actions .ghost {
+    width: 100%;
+    min-width: 0;
+  }
+  .player-row {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+  .player-row select,
+  .player-row input,
+  .paid-toggle {
+    width: 100%;
+  }
+  .team-head,
+  .team-player {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .team-player select {
+    width: 100%;
+  }
   .payment-config, .two, .stats-grid { grid-template-columns: 1fr; }
-  .actions { flex-direction: column-reverse; }
+  .actions {
+    flex-direction: column-reverse;
+  }
+  .actions .primary,
+  .actions .ghost {
+    width: 100%;
+  }
   footer { display: grid; }
 }

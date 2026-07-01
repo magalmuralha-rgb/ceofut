@@ -357,6 +357,11 @@ input:focus, select:focus, textarea:focus {
 .panel-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
 .panel-title span, .muted { color: var(--muted); font-size: 13px; }
 
+.draw-actions {
+  display: grid;
+  gap: 10px;
+}
+
 .empty-side, .empty-state {
   border: 1px dashed rgba(224,185,87,0.58);
   border-radius: 8px;
@@ -437,10 +442,16 @@ input:focus, select:focus, textarea:focus {
   border-radius: 8px;
   padding: 13px;
 }
-.team-head, .team-player { display: flex; justify-content: space-between; gap: 12px; }
+.team-head, .team-player { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
 .team-head { margin-bottom: 10px; }
 .team-head span, .team-player small, .capacity { color: var(--muted); font-size: 12px; }
 .team-player { padding: 7px 0; border-top: 1px solid #eee7dc; }
+.team-player select {
+  width: 112px;
+  min-height: 36px;
+  padding: 7px 9px;
+  font-size: 12px;
+}
 .capacity { display: block; margin-top: 8px; }
 
 .invite, .narrow {
@@ -466,6 +477,18 @@ input:focus, select:focus, textarea:focus {
   background: rgba(0,0,0,0.45);
   border: 1px solid rgba(255,255,255,0.18);
   border-radius: 8px;
+}
+
+.public-draw {
+  margin: 18px 0;
+  padding: 14px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.94);
+  color: #141714;
+}
+
+.public-draw .panel-title {
+  margin-bottom: 10px;
 }
 .success { padding: 24px 0 6px; }
 .check-row { display: flex; gap: 10px; align-items: center; }

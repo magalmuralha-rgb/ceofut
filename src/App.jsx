@@ -124,6 +124,7 @@ function App() {
       valor: Number(payload.valor || 0),
       players: [],
       teams: [],
+      locked: false,
       observacao: payload.observacao || "",
     };
     updateState((current) => ({ ...current, matches: [match, ...current.matches] }));
@@ -390,12 +391,20 @@ function MatchPanel({ match, onCopy, onUpdate }) {
     onUpdate((current) => ({
       ...current,
       players: current.players.map((p) => p.id === id ? { ...p, ...patch, updatedAt: Date.now() } : p),
-      teams: [],
+      teams: current.locked ? current.teams : [],
     }));
   }
 
   function drawTeams() {
-    onUpdate((current) => ({ ...current, teams: balanceTeams(current) }));
+    onUpdate((current) => current.locked ? current : { ...current, teams: balanceTeams(current) });
+  }
+
+  function toggleLock() {
+    onUpdate((current) => ({ ...current, locked: !current.locked }));
+  }
+
+  function movePlayer(playerId, targetTeamId) {
+    onUpdate((current) => current.locked ? current : movePlayerBetweenTeams(current, playerId, targetTeamId));
   }
 
   return (
@@ -435,10 +444,22 @@ function MatchPanel({ match, onCopy, onUpdate }) {
         <div className="panel draw-panel">
           <div className="panel-title">
             <h2>Sorteio</h2>
-            <span>{MODALIDADES[match.modalidade].badge}</span>
+            <span>{match.locked ? "travado" : MODALIDADES[match.modalidade].badge}</span>
           </div>
-          <button className="primary full" disabled={confirmed.length < 2} onClick={drawTeams}>Sortear times inteligentes</button>
-          <TeamResult teams={match.teams} modalidade={match.modalidade} />
+          <div className="draw-actions">
+            <button className="primary full" disabled={confirmed.length < 2 || match.locked} onClick={drawTeams}>
+              {match.teams?.length ? "Sortear novamente" : "Sortear times inteligentes"}
+            </button>
+            <button className="ghost full" disabled={!match.teams?.length} onClick={toggleLock}>
+              {match.locked ? "Destravar sorteio" : "Travar sorteio"}
+            </button>
+          </div>
+          <TeamResult
+            teams={match.teams}
+            modalidade={match.modalidade}
+            editable={!match.locked}
+            onMove={movePlayer}
+          />
         </div>
       </div>
     </div>
@@ -572,6 +593,15 @@ function InvitePage({ match, onBack, onConfirm }) {
         <h1>{match.nome}</h1>
         <p>{formatDate(match.data)} as {match.hora} - {match.local}</p>
         {match.pixKey && <div className="pix-box">Pix: {match.pixKey}{match.valor ? ` - R$ ${Number(match.valor).toFixed(2).replace(".", ",")}` : ""}</div>}
+        {match.teams?.length > 0 && (
+          <div className="public-draw">
+            <div className="panel-title">
+              <h2>Times sorteados</h2>
+              <span>{match.locked ? "travado pelo CEO" : "preliminar"}</span>
+            </div>
+            <TeamResult teams={match.teams} modalidade={match.modalidade} />
+          </div>
+        )}
         {done ? (
           <div className="success">
             <h2>Resposta salva</h2>
@@ -630,7 +660,7 @@ function PositionPicker({ selected, onToggle }) {
   );
 }
 
-function TeamResult({ teams, modalidade }) {
+function TeamResult({ teams, modalidade, editable = false, onMove }) {
   if (!teams?.length) return <p className="muted">Os times sorteados aparecem aqui. Times incompletos tambem sao aceitos.</p>;
   return (
     <div className="teams">
@@ -642,8 +672,17 @@ function TeamResult({ teams, modalidade }) {
           </div>
           {team.players.map((p) => (
             <div className="team-player" key={p.id}>
-              <span>{p.nome}</span>
-              <small>{p.assignedPosition || p.posicoes[0]} - {p.nota}</small>
+              <div>
+                <span>{p.nome}</span>
+                <small>{p.assignedPosition || p.posicoes[0]} - {p.nota}</small>
+              </div>
+              {editable && onMove ? (
+                <select value={team.id} onChange={(e) => onMove(p.id, e.target.value)} aria-label={`Mover ${p.nome}`}>
+                  {teams.map((target, targetIndex) => (
+                    <option key={target.id} value={target.id}>Time {targetIndex + 1}</option>
+                  ))}
+                </select>
+              ) : null}
             </div>
           ))}
           <small className="capacity">{team.players.length}/{MODALIDADES[modalidade].teamSize}</small>
@@ -667,7 +706,27 @@ function upsertPlayer(match, athlete) {
   const players = existing
     ? match.players.map((p) => p.id === existing.id ? { ...p, ...athlete, id: existing.id, paid: p.paid || athlete.paid } : p)
     : [...match.players, athlete];
-  return { ...match, players, teams: [] };
+  return { ...match, players, teams: match.locked ? match.teams : [] };
+}
+
+function movePlayerBetweenTeams(match, playerId, targetTeamId) {
+  if (!match.teams?.length) return match;
+  const moving = match.teams.flatMap((team) => team.players).find((player) => player.id === playerId);
+  if (!moving) return match;
+  const teams = match.teams.map((team) => ({
+    ...team,
+    players: team.players.filter((player) => player.id !== playerId),
+  })).map((team) => (
+    team.id === targetTeamId ? { ...team, players: [...team.players, moving] } : team
+  ));
+  return { ...match, teams: recalcTeamScores(teams) };
+}
+
+function recalcTeamScores(teams) {
+  return teams.map((team) => ({
+    ...team,
+    score: team.players.reduce((sum, player) => sum + Number(player.nota || 0), 0),
+  }));
 }
 
 function balanceTeams(match) {
